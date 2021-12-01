@@ -47,15 +47,22 @@ class SonarSweep {
     public static void main(String[] args) {
 
         // part 1 check
-        System.out.println(countDepthIncreases(Arrays.asList(199, 200, 208, 210, 200, 207, 240, 269, 260, 263)) == 7);
+        System.out.println(
+            "Part 1 test (should be 7): " 
+            + countDepthIncreases(Arrays.asList(199, 200, 208, 210, 200, 207, 240, 269, 260, 263)));
 
         // part 2 check
-        System.out.println(countSlidingWindowDepthIncreases(Arrays.asList(199, 200, 208, 210, 200, 207, 240, 269, 260, 263)));
+        System.out.println(
+            "Part 2 test (should be 5): "
+            + countSlidingWindowDepthIncreases(Arrays.asList(199, 200, 208, 210, 200, 207, 240, 269, 260, 263)));
 
         try {
-            // part 1 - solution
             List<Integer> depthMeasurements = readInputFileIntoIntegerList("day_1_input.txt");
+            
+            // part 1 - solution
             System.out.println("Part 1 answer: " + countDepthIncreases(depthMeasurements));
+
+            // part 2 - solution
             System.out.println("Part 2 answer: " + countSlidingWindowDepthIncreases(depthMeasurements));
         } catch (FileNotFoundException e) {
             System.err.println(e);
