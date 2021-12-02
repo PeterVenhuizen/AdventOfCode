@@ -17,11 +17,11 @@ class SonarSweep {
             return depthMeasurements;
         }
 
-    public static long countDepthIncreases(List<Integer> measurements) {
-        return IntStream
+    public static int countDepthIncreases(List<Integer> measurements) {
+        return (int) IntStream
             .range(1, measurements.size())
             .filter(i -> measurements.get(i) > measurements.get(i-1))
-            .count();      
+            .count();
     }
 
     public static int sumOfList(List<Integer> l) {
