@@ -5,6 +5,7 @@ class Bingo {
     private List<String> board;
     private List<Boolean> marked;
     private int boardSize;
+    private int winningNumber;
 
     public Bingo(List<String> boardList) {
         this.board = boardList;
@@ -51,13 +52,17 @@ class Bingo {
         return false;
     }
 
-    public int getFinalScore(int lastNumber) {
+    public void setWinningNumber(int winningNumber) {
+        this.winningNumber = winningNumber;
+    }
+
+    public int getFinalScore() {
         Integer totalOfUnmarked = 0;
         for (int i = 0; i < this.board.size(); i++) {
             boolean isNotMarked = this.marked.get(i) == null;
             if (isNotMarked) 
                 totalOfUnmarked += Integer.parseInt(this.board.get(i));
         }
-        return totalOfUnmarked * lastNumber;
+        return totalOfUnmarked * this.winningNumber;
     }
 }
