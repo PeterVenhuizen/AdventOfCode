@@ -48,7 +48,7 @@ public class GiantSquid {
     public static void main(String[] args) {
 
         try {
-            readInput("input.txt");
+            readInput("test_input.txt");
 
             List<Bingo> winners = new ArrayList<>();
 
@@ -71,12 +71,17 @@ public class GiantSquid {
 
                         if (board.hasWon()) {
                             winners.add(board);
+
+                            if (winners.size() == 1) {
+                                System.out.println("First winner: " + board.getFinalScore(Integer.parseInt(nextDraw)));
+                            }
+
                             System.out.println("Number of winners: " + winners.size());
-                            board.printBoard();
-                            board.printMarks();
+                            // board.printBoard();
+                            // board.printMarks();
                             
                             if (winners.size() == GiantSquid.BOARDS.size()) {
-                                System.out.println(board.getFinalScore(Integer.parseInt(nextDraw)));
+                                System.out.println("Last winner: " + board.getFinalScore(Integer.parseInt(nextDraw)));
                                 break drawloop;
                             }
                         }
