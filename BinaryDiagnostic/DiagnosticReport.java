@@ -4,17 +4,9 @@ import java.util.stream.Collectors;
 
 class DiagnosticReport {
     private List<String> reportData;
-    private Function<Map<String, Long>, String> mostCommonFunc;
-    private Function<Map<String, Long>, String> leastCommonFunc;
-    private Function<Map<String, Long>, String> mostCommonWithDefaultFunc;
-    private Function<Map<String, Long>, String> leastCommonWithDefaultFunc;
     
     public DiagnosticReport(List<String> reportData) {
         this.reportData = reportData;
-        this.mostCommonFunc = this::getMostCommon;
-        this.leastCommonFunc = this::getLeastCommon;
-        this.mostCommonWithDefaultFunc = this::getMostCommonWithDefault;
-        this.leastCommonWithDefaultFunc = this::getLeastCommonWithDefault;
     }
 
     /* get byte string for a specific column index */
@@ -56,11 +48,13 @@ class DiagnosticReport {
     }
 
     private String getGammaRate() {
-        return this.computePowerConsumption(0, "", this.mostCommonFunc);
+        Function<Map<String, Long>, String> func = this::getMostCommon;
+        return this.computePowerConsumption(0, "", func);
     }
 
     private String getEpsilonRate() {
-        return this.computePowerConsumption(0, "", this.leastCommonFunc);
+        Function<Map<String, Long>, String> func = this::getLeastCommon;
+        return this.computePowerConsumption(0, "", func);
     }
 
     private String getWantedBit(List<String> data, int index,
@@ -85,13 +79,13 @@ class DiagnosticReport {
     }
 
     private String getOxygenGeneratorRating() {
-        return this.computeLifeSupportRating(this.reportData, 0, "0", 
-            this.mostCommonWithDefaultFunc);
+        Function<Map<String, Long>, String> func = this::getMostCommonWithDefault;
+        return this.computeLifeSupportRating(this.reportData, 0, "0", func);
     }
 
     private String getCO2ScrubberRating() {
-        return this.computeLifeSupportRating(this.reportData, 0, "0", 
-            this.leastCommonWithDefaultFunc);
+        Function<Map<String, Long>, String> func = this::getLeastCommonWithDefault;
+        return this.computeLifeSupportRating(this.reportData, 0, "0", func);
     }
 
     private String computeLifeSupportRating(List<String> data, int index, 
