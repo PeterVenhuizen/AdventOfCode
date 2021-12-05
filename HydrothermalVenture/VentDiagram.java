@@ -6,38 +6,45 @@ class VentDiagram {
 
     public VentDiagram(List<Vent> vents) {
         this.vents = vents;
-        this.getVentExtremes();
-        this.drawDiagram(false);
+        this.initVentDiagram();
     }
 
-    private void getVentExtremes() {
-        int minX = Integer.MAX_VALUE, minY = Integer.MAX_VALUE;
+    private void initVentDiagram() {
+        // int minX = Integer.MAX_VALUE, minY = Integer.MAX_VALUE;
         int maxX = 0, maxY = 0;
 
+        /* Get the boundaries of the Vent Diagram by determining the 
+        the biggest X and Y values */
         for (Vent vent : this.vents) {
 
-            int newMinX, newMaxX, newMinY, newMaxY;
+            if (vent.getMaxX() > maxX) 
+                maxX = vent.getMaxX();
 
-            if ((newMinX = vent.getMin(vent.x)) < minX) {
-                minX = newMinX;
-            }
+            if (vent.getMaxY() > maxY)
+                maxY = vent.getMaxY();
 
-            if ((newMaxX = vent.getMax(vent.x)) > maxX) {
-                maxX = newMaxX;
-            }
+            // int newMinX, newMaxX, newMinY, newMaxY;
 
-            if ((newMinY = vent.getMin(vent.y)) < minY) {
-                minY = newMinY;
-            }
+            // if ((newMinX = vent.getMin(vent.x)) < minX) {
+            //     minX = newMinX;
+            // }
 
-            if ((newMaxY = vent.getMax(vent.y)) > maxY) {
-                maxY = newMaxY;
-            }
+            // if ((newMaxX = vent.getMax(vent.x)) > maxX) {
+            //     maxX = newMaxX;
+            // }
+
+            // if ((newMinY = vent.getMin(vent.y)) < minY) {
+            //     minY = newMinY;
+            // }
+
+            // if ((newMaxY = vent.getMax(vent.y)) > maxY) {
+            //     maxY = newMaxY;
+            // }
         }
 
-        System.out.println("Min X :" + minX);
+        // System.out.println("Min X :" + minX);
         System.out.println("Max X :" + maxX);
-        System.out.println("Min Y :" + minY);
+        // System.out.println("Min Y :" + minY);
         System.out.println("Max Y :" + maxY);
 
         this.ventDiagram = new int[maxY+1][maxX+1];
@@ -45,13 +52,17 @@ class VentDiagram {
         System.out.println(this.ventDiagram[0].length);
     }
 
-    private void drawDiagram(boolean drawDiagonal) {
+    public void mapVents() {
         this.vents.forEach(vent -> {
             if (vent.isHorizontal()) {
                 // System.out.println("horizontal");
-                int minX = vent.getMin(vent.x);
-                int maxX = vent.getMax(vent.x);
-                int y = vent.y[0];
+                // int minX = vent.getMin(vent.x);
+                // int maxX = vent.getMax(vent.x);
+                // int y = vent.y[0];
+
+                int minX = vent.getMinX();
+                int maxX = vent.getMaxX();
+                int y = vent.getMinY();
                 // System.out.println("minX: " + minX + ", maxX: " + maxX);
                 for (int x = minX; x <= maxX; x++) {
                     // System.out.println("x: " + x + ", y: " + y);
@@ -75,8 +86,14 @@ class VentDiagram {
                     } catch (IndexOutOfBoundsException e) {}
                 }
             }
+        });
+    }
 
-            else {
+    public void mapVents(boolean mapDiagonal) {
+        this.mapVents();
+        this.vents.forEach(vent -> {
+            if (vent.isDiagonal()) {
+
                 System.out.println(Arrays.toString(vent.x) + " | " + Arrays.toString(vent.y));
                 int x1 = vent.x[0];
                 int x2 = vent.x[1];

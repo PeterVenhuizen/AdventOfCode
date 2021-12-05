@@ -60,4 +60,22 @@ class Vent {
     public int getMax(int[] values) {
         return Arrays.stream(values).max().getAsInt();
     }
+
+    public int getMinX() {
+        return this.getMin(this.x);
+    }
+
+    public int getMaxX() {
+        return this.getMax(this.x);
+    }
+
+    public int getMinY() {
+        return this.getMin(this.y);
+    }
+
+    public int getMaxY() {
+        return this.getMax(this.y);
+    }
+
+
 }
