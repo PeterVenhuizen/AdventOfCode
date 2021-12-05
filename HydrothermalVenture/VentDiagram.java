@@ -54,29 +54,36 @@ class VentDiagram {
 
     public void mapHorizontalAndVertical() {
         this.vents.forEach(vent -> {
-            if (vent.isHorizontal()) {
-                int minX = vent.getMinX();
-                int maxX = vent.getMaxX();
-                int y = vent.getMinY();
-                
-                for (int x = minX; x <= maxX; x++) {
-                    try {
-                        this.ventDiagram[y][x]++;
-                    } catch (IndexOutOfBoundsException e) {}
-                }
+            if (!vent.isDiagonal()) {
+                List<Point> points = vent.getPoints();
+                points.forEach(p -> {
+                    this.ventDiagram[p.y][p.x]++;
+                });
             }
 
-            else if (vent.isVertical()) {
-                int minY = vent.getMinY();
-                int maxY = vent.getMaxY();
-                int x = vent.getMinX();
+            // if (vent.isHorizontal()) {
+            //     int minX = vent.getMinX();
+            //     int maxX = vent.getMaxX();
+            //     int y = vent.getMinY();
 
-                for (int y = minY; y <= maxY; y++) {
-                    try {
-                        this.ventDiagram[y][x]++;
-                    } catch (IndexOutOfBoundsException e) {}
-                }
-            }
+            //     for (int x = minX; x <= maxX; x++) {
+            //         try {
+            //             this.ventDiagram[y][x]++;
+            //         } catch (IndexOutOfBoundsException e) {}
+            //     }
+            // }
+
+            // else if (vent.isVertical()) {
+            //     int minY = vent.getMinY();
+            //     int maxY = vent.getMaxY();
+            //     int x = vent.getMinX();
+
+            //     for (int y = minY; y <= maxY; y++) {
+            //         try {
+            //             this.ventDiagram[y][x]++;
+            //         } catch (IndexOutOfBoundsException e) {}
+            //     }
+            // }
         });
     }
 

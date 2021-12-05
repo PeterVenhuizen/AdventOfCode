@@ -41,6 +41,32 @@ class Vent {
 
     }
 
+    public List<Point> getPoints() {
+        List<Point> points = new ArrayList<>();
+
+        int x1 = this.x[0];
+        int x2 = this.x[1];
+        int y1 = this.y[0];
+        int y2 = this.y[1];
+
+        System.out.println(x1 + ", " + x2 + ", " + y1 + ", " + y2);
+        while (x1 != x2 || y1 != y2) {
+            System.out.println("x: " + x1 + ", y: " + y1);
+            points.add(new Point(x1, y1));
+
+            if (x1 != x2) {
+                x1 = (x1 < x2) ? ++x1 : --x1;
+            }
+
+            if (y1 != y2) {
+                y1 = (y1 < y2) ? ++y1 : --y1;
+            }
+        }
+        points.add(new Point(x1, y1));
+        System.out.println(points.size());
+        return points;
+    }
+
     public boolean isHorizontal() {
         return this.orientation == Lines.HORIZONTAL;
     }
