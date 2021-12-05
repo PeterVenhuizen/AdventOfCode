@@ -49,9 +49,9 @@ class Vent {
         int y1 = this.y[0];
         int y2 = this.y[1];
 
-        System.out.println(x1 + ", " + x2 + ", " + y1 + ", " + y2);
+        // System.out.println(x1 + ", " + x2 + ", " + y1 + ", " + y2);
         while (x1 != x2 || y1 != y2) {
-            System.out.println("x: " + x1 + ", y: " + y1);
+            // System.out.println("x: " + x1 + ", y: " + y1);
             points.add(new Point(x1, y1));
 
             if (x1 != x2) {
@@ -63,7 +63,7 @@ class Vent {
             }
         }
         points.add(new Point(x1, y1));
-        System.out.println(points.size());
+        // System.out.println(points.size());
         return points;
     }
 

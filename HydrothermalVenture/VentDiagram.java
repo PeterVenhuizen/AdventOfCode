@@ -91,22 +91,27 @@ class VentDiagram {
         this.vents.forEach(vent -> {
             if (vent.isDiagonal()) {
 
+                List<Point> points = vent.getPoints();
+                points.forEach(p -> {
+                    this.ventDiagram[p.y][p.x]++;
+                });
+
                 // System.out.println(Arrays.toString(vent.x) + " | " + Arrays.toString(vent.y));
-                int x1 = vent.x[0];
-                int x2 = vent.x[1];
-                int y1 = vent.y[0];
-                int y2 = vent.y[1];
+                // int x1 = vent.x[0];
+                // int x2 = vent.x[1];
+                // int y1 = vent.y[0];
+                // int y2 = vent.y[1];
 
-                int x = x1;
-                int y = y1;
+                // int x = x1;
+                // int y = y1;
 
-                while (x != x2 && y != y2) {
-                    this.ventDiagram[y][x]++;
-                    // System.out.println("x: " + x + ", y: " + y);
-                    x = (x1 < x2) ? x + 1 : x - 1;
-                    y = (y1 < y2) ? y + 1 : y - 1;
-                }
-                this.ventDiagram[y][x]++;
+                // while (x != x2 && y != y2) {
+                //     this.ventDiagram[y][x]++;
+                //     // System.out.println("x: " + x + ", y: " + y);
+                //     x = (x1 < x2) ? x + 1 : x - 1;
+                //     y = (y1 < y2) ? y + 1 : y - 1;
+                // }
+                // this.ventDiagram[y][x]++;
             }
         });
     }
