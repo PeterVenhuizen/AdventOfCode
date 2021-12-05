@@ -53,22 +53,12 @@ class Vent {
         return this.isDiagonal;
     }
 
-    public int getMax(int[] values) {
-        return Arrays.stream(values).max().getAsInt();
-    }
-
     public int getMaxX() {
-        return this.getMax(new int[]{this.x1, this.x2});
+        return (this.x1 > this.x2) ? this.x1 : this.x2;
     }
 
     public int getMaxY() {
-        return this.getMax(new int[]{this.y1, this.y2});
-    }
-
-    @Override
-    public String toString() {
-        return String.format("%d, %d | %d, %d", 
-            this.x1, this.y1, this.x2, this.y2);
+        return (this.y1 > this.y2) ? this.y1 : this.y2;
     }
 
 }
