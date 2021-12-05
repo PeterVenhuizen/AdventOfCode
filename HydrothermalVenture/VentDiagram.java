@@ -40,15 +40,10 @@ class VentDiagram {
     }
 
     public int getDangerousAreas() {
-        int dangerous = 0;
-        for (int i = 0; i < this.ventDiagram.length; i++) {
-            for (int j = 0; j < this.ventDiagram[i].length; j++) {
-                if (this.ventDiagram[i][j] >= 2) {
-                    dangerous++;
-                }
-            }
-        }
-        return dangerous;
+        return (int) Arrays.stream(this.ventDiagram)
+            .flatMapToInt(x -> Arrays.stream(x))
+            .filter(v -> v >= 2)
+            .count();
     }
 
     public void print() {
