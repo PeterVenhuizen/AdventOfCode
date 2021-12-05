@@ -43,29 +43,23 @@ class VentDiagram {
         }
 
         // System.out.println("Min X :" + minX);
-        System.out.println("Max X :" + maxX);
+        // System.out.println("Max X :" + maxX);
         // System.out.println("Min Y :" + minY);
-        System.out.println("Max Y :" + maxY);
+        // System.out.println("Max Y :" + maxY);
 
         this.ventDiagram = new int[maxY+1][maxX+1];
-        System.out.println(this.ventDiagram.length);
-        System.out.println(this.ventDiagram[0].length);
+        // System.out.println(this.ventDiagram.length);
+        // System.out.println(this.ventDiagram[0].length);
     }
 
-    public void mapVents() {
+    public void mapHorizontalAndVertical() {
         this.vents.forEach(vent -> {
             if (vent.isHorizontal()) {
-                // System.out.println("horizontal");
-                // int minX = vent.getMin(vent.x);
-                // int maxX = vent.getMax(vent.x);
-                // int y = vent.y[0];
-
                 int minX = vent.getMinX();
                 int maxX = vent.getMaxX();
                 int y = vent.getMinY();
-                // System.out.println("minX: " + minX + ", maxX: " + maxX);
+                
                 for (int x = minX; x <= maxX; x++) {
-                    // System.out.println("x: " + x + ", y: " + y);
                     try {
                         this.ventDiagram[y][x]++;
                     } catch (IndexOutOfBoundsException e) {}
@@ -73,14 +67,11 @@ class VentDiagram {
             }
 
             else if (vent.isVertical()) {
-                // System.out.println("vertical");
-                int minY = vent.getMin(vent.y);
-                int maxY = vent.getMax(vent.y);
-                int x = (this.ventDiagram.length == vent.x[0]) ? vent.x[0] - 1 : vent.x[0];
+                int minY = vent.getMinY();
+                int maxY = vent.getMaxY();
+                int x = vent.getMinX();
 
-                // System.out.println("minY: " + minY + ", maxY: " + maxY);
                 for (int y = minY; y <= maxY; y++) {
-                    // System.out.println("x: " + x + ", y: " + y);
                     try {
                         this.ventDiagram[y][x]++;
                     } catch (IndexOutOfBoundsException e) {}
@@ -89,12 +80,11 @@ class VentDiagram {
         });
     }
 
-    public void mapVents(boolean mapDiagonal) {
-        this.mapVents();
+    public void mapDiagonal() {
         this.vents.forEach(vent -> {
             if (vent.isDiagonal()) {
 
-                System.out.println(Arrays.toString(vent.x) + " | " + Arrays.toString(vent.y));
+                // System.out.println(Arrays.toString(vent.x) + " | " + Arrays.toString(vent.y));
                 int x1 = vent.x[0];
                 int x2 = vent.x[1];
                 int y1 = vent.y[0];
@@ -105,7 +95,7 @@ class VentDiagram {
 
                 while (x != x2 && y != y2) {
                     this.ventDiagram[y][x]++;
-                    System.out.println("x: " + x + ", y: " + y);
+                    // System.out.println("x: " + x + ", y: " + y);
                     x = (x1 < x2) ? x + 1 : x - 1;
                     y = (y1 < y2) ? y + 1 : y - 1;
                 }

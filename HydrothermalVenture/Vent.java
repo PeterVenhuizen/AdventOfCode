@@ -19,7 +19,7 @@ class Vent {
     }
 
     private void initVent(String ventString) {
-        System.out.println(ventString);
+        // System.out.println(ventString);
         String regex = "(\\d+),(\\d+) -> (\\d+),(\\d+)";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(ventString);

@@ -17,9 +17,14 @@ public class HydrothermalVenture {
     public static void main(String[] args) {
         try {
             VentDiagram testDiagram = initVentDiagram("test_input.txt");
-            testDiagram.mapVents();
-            testDiagram.print();
-            System.out.println(testDiagram.getDangerousAreas());
+            testDiagram.mapHorizontalAndVertical();
+            // testDiagram.print();
+            System.out.println("Part 1 test (should be 5): " + testDiagram.getDangerousAreas());
+
+            testDiagram.mapDiagonal();
+            // testDiagram.print();
+            System.out.println("Part 2 test (should be 12): " + testDiagram.getDangerousAreas());
+
         } catch (IOException e) {}
     }
 }
