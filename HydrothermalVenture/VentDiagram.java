@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.function.Predicate;
 
 class VentDiagram {
     private int[][] ventDiagram;
@@ -27,28 +28,15 @@ class VentDiagram {
         this.ventDiagram = new int[maxY+1][maxX+1];
     }
 
-    public void mapHorizontalAndVertical() {
-        this.vents.forEach(vent -> {
-            if (!vent.isDiagonal()) {
+    public void mapVents(Predicate<Vent> ventFilter) {
+        this.vents.stream()
+            .filter(ventFilter)
+            .forEach(vent -> {
                 List<Point> points = vent.getPoints();
                 points.forEach(p -> {
                     this.ventDiagram[p.y][p.x]++;
                 });
-            }
-        });
-    }
-
-    public void mapDiagonal() {
-        this.vents.forEach(vent -> {
-            if (vent.isDiagonal()) {
-
-                List<Point> points = vent.getPoints();
-                points.forEach(p -> {
-                    this.ventDiagram[p.y][p.x]++;
-                });
-
-            }
-        });
+            });
     }
 
     public int getDangerousAreas() {
