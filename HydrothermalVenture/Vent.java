@@ -1,20 +1,14 @@
 import java.util.*;
 import java.util.regex.*;
 
-enum Lines {
-    HORIZONTAL,
-    VERTICAL,
-    DIAGONAL
-}
-
 class Vent {
-    public int[] x;
-    public int[] y;
-    private Lines orientation;
+    private int x1;
+    private int x2;
+    private int y1;
+    private int y2;
+    private boolean isDiagonal;
 
     public Vent(String ventString) {
-        this.x = new int[2];
-        this.y = new int[2];
         this.initVent(ventString);
     }
 
@@ -24,80 +18,57 @@ class Vent {
         Matcher matcher = pattern.matcher(ventString);
 
         if (matcher.find()) {
-            this.x[0] = Integer.parseInt(matcher.group(1));
-            this.y[0] = Integer.parseInt(matcher.group(2));
-            this.x[1] = Integer.parseInt(matcher.group(3));
-            this.y[1] = Integer.parseInt(matcher.group(4));
+            this.x1 = Integer.parseInt(matcher.group(1));
+            this.y1 = Integer.parseInt(matcher.group(2));
+            this.x2 = Integer.parseInt(matcher.group(3));
+            this.y2 = Integer.parseInt(matcher.group(4));
         }
 
-        if (this.x[0] == this.x[1]) {
-            this.orientation = Lines.VERTICAL;
-        } else if (this.y[0] == this.y[1]) {
-            this.orientation = Lines.HORIZONTAL;
-        } else {
-            this.orientation = Lines.DIAGONAL;
-        }
-
+        this.isDiagonal = (this.x1 != this.x2 && this.y1 != this.y2)
+            ? true : false;
     }
 
     public List<Point> getPoints() {
         List<Point> points = new ArrayList<>();
 
-        int x1 = this.x[0];
-        int x2 = this.x[1];
-        int y1 = this.y[0];
-        int y2 = this.y[1];
+        int x = this.x1;
+        int y = this.y1;
 
-        while (x1 != x2 || y1 != y2) {
-            points.add(new Point(x1, y1));
+        while (x != this.x2 || y != this.y2) {
+            points.add(new Point(x, y));
 
-            if (x1 != x2) {
-                x1 = (x1 < x2) ? ++x1 : --x1;
+            if (x != this.x2) {
+                x = (x < this.x2) ? ++x : --x;
             }
 
-            if (y1 != y2) {
-                y1 = (y1 < y2) ? ++y1 : --y1;
+            if (y != this.y2) {
+                y = (y < this.y2) ? ++y : --y;
             }
         }
-        points.add(new Point(x1, y1));
+        points.add(new Point(x, y));
         return points;
     }
 
-    public boolean isHorizontal() {
-        return this.orientation == Lines.HORIZONTAL;
-    }
-
-    public boolean isVertical() {
-        return this.orientation == Lines.VERTICAL;
-    }
-
     public boolean isDiagonal() {
-        return this.orientation == Lines.DIAGONAL;
-    }
-
-    public int getMin(int[] values) {
-        return Arrays.stream(values).min().getAsInt();
+        return this.isDiagonal;
     }
 
     public int getMax(int[] values) {
         return Arrays.stream(values).max().getAsInt();
     }
 
-    public int getMinX() {
-        return this.getMin(this.x);
-    }
-
     public int getMaxX() {
-        return this.getMax(this.x);
-    }
-
-    public int getMinY() {
-        return this.getMin(this.y);
+        return this.getMax(new int[]{this.x1, this.x2});
     }
 
     public int getMaxY() {
-        return this.getMax(this.y);
+        return this.getMax(new int[]{this.y1, this.y2});
     }
 
+    @Override
+    public String toString() {
+        return String.format("%d, %d | %d, %d", 
+            this.x1, this.y1, this.x2, this.y2);
+    }
 
 }
