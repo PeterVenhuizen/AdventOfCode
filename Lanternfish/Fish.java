@@ -1,5 +1,3 @@
-import javax.management.RuntimeErrorException;
-
 class Fish {
     private Integer daysUntilNew;
     private boolean firstTimer;
