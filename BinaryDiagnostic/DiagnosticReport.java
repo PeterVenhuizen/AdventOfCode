@@ -32,7 +32,7 @@ class DiagnosticReport {
         if (occurences.get("0") == occurences.get("1")) {
             return "1";
         }
-        return this.getMostCommon(occurences);
+        return getMostCommon(occurences);
     }
 
     private String getLeastCommon(Map<String, Long> occurences) {
@@ -44,14 +44,14 @@ class DiagnosticReport {
         if (occurences.get("0") == occurences.get("1")) {
             return "0";
         }
-        return this.getLeastCommon(occurences);
+        return getLeastCommon(occurences);
     }
 
     private String getWantedBit(List<String> data, int index,
         Function<Map<String, Long>, String> func) {
 
-        String bitColumn = this.getBitColumnAtIndex(data, index);
-        Map<String, Long> occurences = this.getOccurences(bitColumn);
+        String bitColumn = getBitColumnAtIndex(data, index);
+        Map<String, Long> occurences = getOccurences(bitColumn);
         return func.apply(occurences);
     }
 
@@ -63,19 +63,9 @@ class DiagnosticReport {
             return binaryString;
         }
 
-        String bit = this.getWantedBit(this.reportData, index, func);
-        return this.computePowerConsumption(index + 1, 
+        String bit = getWantedBit(this.reportData, index, func);
+        return computePowerConsumption(index + 1, 
             binaryString + bit, func);
-    }
-
-    private String getOxygenGeneratorRating() {
-        Function<Map<String, Long>, String> func = this::getMostCommonWithDefault;
-        return this.computeLifeSupportRating(this.reportData, 0, "0", func);
-    }
-
-    private String getCO2ScrubberRating() {
-        Function<Map<String, Long>, String> func = this::getLeastCommonWithDefault;
-        return this.computeLifeSupportRating(this.reportData, 0, "0", func);
     }
 
     private String computeLifeSupportRating(List<String> data, int index, 
@@ -85,12 +75,12 @@ class DiagnosticReport {
             return data.get(0);
         }
 
-        String bit = this.getWantedBit(data, index, func);
+        String bit = getWantedBit(data, index, func);
         List<String> dataSubset = data.stream()
             .filter(v -> Character.toString(v.charAt(index)).equals(bit))
             .collect(Collectors.toList());
 
-        return this.computeLifeSupportRating(dataSubset, index + 1, defaultBit, func);
+        return computeLifeSupportRating(dataSubset, index + 1, defaultBit, func);
     }
 
     private int binaryStringToDecimal(String binaryString) {
@@ -109,9 +99,6 @@ class DiagnosticReport {
         String CO2ScrubberRating = computeLifeSupportRating(this.reportData, 0, "0",
             this::getLeastCommonWithDefault);
         return binaryStringToDecimal(O2GeneratorRating) * binaryStringToDecimal(CO2ScrubberRating);
-
-        // return this.binaryStringToDecimal(this.getOxygenGeneratorRating())
-        //     * this.binaryStringToDecimal(this.getCO2ScrubberRating());
     }
 
 }
