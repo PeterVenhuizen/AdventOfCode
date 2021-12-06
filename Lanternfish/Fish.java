@@ -1,5 +1,7 @@
+import javax.management.RuntimeErrorException;
+
 class Fish {
-    private int daysUntilNew;
+    private Integer daysUntilNew;
     private boolean firstTimer;
 
     public Fish() {
@@ -7,12 +9,12 @@ class Fish {
         this.firstTimer = true;
     }
 
-    public Fish(int daysUntilNew) {
+    public Fish(Integer daysUntilNew) {
         this.daysUntilNew = daysUntilNew;
         this.firstTimer = false;
     }
 
-    public int getDays() {
+    public Integer getDays() {
         return this.daysUntilNew;
     }
 

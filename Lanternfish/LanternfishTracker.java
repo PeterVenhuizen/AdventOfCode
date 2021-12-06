@@ -4,30 +4,39 @@ import java.util.stream.Collectors;
 import java.math.BigInteger;
 
 class LanternfishTracker {
-    private List<Fish> fish;
+    private List<Fish> school;
 
-    public LanternfishTracker(List<Fish> fish) {
-        this.fish = fish;
+    public LanternfishTracker(List<Fish> school) {
+        this.school = school;
     }
 
     public int simulate(int days) {
+
+        // create copy of the school, so part 2 can be run from the 
+        // starting state as well
+        List<Fish> fishes = this.school.stream()
+            .map(fish -> new Fish(fish.getDays()))
+            .collect(Collectors.toList());
+
         while (days > 0) {
 
-            List<Fish> newFish = new ArrayList<>();
-            for (Fish f : this.fish) {
-                f.mature();
-                if (f.isReadyToSpawn()) {
-                    newFish.add(new Fish());
-                }
-            }
-            
-            List<Fish> allFish = Stream.concat(this.fish.stream(), newFish.stream())
+            // mature all fish
+            fishes.forEach(f -> f.mature());
+
+            // get new fish
+            List<Fish> newFish = fishes.stream()
+                .filter(fish -> fish.isReadyToSpawn())
+                .map(fish -> new Fish())
                 .collect(Collectors.toList());
-            this.fish = allFish;
+            
+            // combine fish schools
+            fishes = Stream.concat(fishes.stream(), newFish.stream())
+                .collect(Collectors.toList());
 
             days--;
         }
-        return this.fish.size();
+
+        return fishes.size();
     }
 
     // public int memorySimulate(int days) {
@@ -36,9 +45,11 @@ class LanternfishTracker {
         List<BigInteger> nFish = new ArrayList<>();
         // List<List<String>> nFish = new ArrayList<>();
 
+        System.out.println(toString());
+
         for (int i = 0; i < 9; i++) {
             int n = i;
-            int nThisAge = (int) this.fish.stream().filter(f -> f.getDays() == n).count();
+            int nThisAge = (int) this.school.stream().filter(f -> f.getDays() == n).count();
             // List<String> fishSoup = this.fish.stream()
             //     .filter(f -> f.getDays() == n)
             //     .map(f -> "o")
@@ -80,7 +91,7 @@ class LanternfishTracker {
 
     @Override
     public String toString() {
-        return this.fish.stream()
+        return this.school.stream()
             .map(f -> f.toString())
             .collect(Collectors.joining(","));
     }
