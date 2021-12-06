@@ -27,7 +27,7 @@ public class Lanternfish {
             // System.out.println("Answer part 1: " + tracker.simulate(80));
 
             // LanternfishTracker testTracker = initLanterfishTracker("test_input.txt");
-            System.out.println("Test part 2 (should be 26984457539): " + testTracker.memorySimulate(256));
+            System.out.println("Test part 2 (should be 26984457539): " + testTracker.simulateMemoryEfficient(256));
             // System.out.println("Test part 1 (should be 26): " + testTracker.simulate(256));
 
             // LanternfishTracker tracker = initLanterfishTracker("input.txt");

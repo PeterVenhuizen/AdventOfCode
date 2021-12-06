@@ -39,53 +39,49 @@ class LanternfishTracker {
         return fishes.size();
     }
 
-    // public int memorySimulate(int days) {
-    public BigInteger memorySimulate(int days) {
-        // List<Integer> nFish = new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8));
-        List<BigInteger> nFish = new ArrayList<>();
-        // List<List<String>> nFish = new ArrayList<>();
+    public BigInteger simulateMemoryEfficient(int days) {
 
-        System.out.println(toString());
+        /* 
+            Create a List with the index being the days until when they will
+            spawn again and the BigInteger value representing the total number
+            of fish for that day
 
+            numberOfFish.get(0) -> number of fish who will spawn again in zero days
+            numberOfFish.get(1) -> number of fish who will spawn again in one day
+            etc.
+        */
+        List<BigInteger> numberOfFish = new ArrayList<>();
         for (int i = 0; i < 9; i++) {
-            int n = i;
-            int nThisAge = (int) this.school.stream().filter(f -> f.getDays() == n).count();
-            // List<String> fishSoup = this.fish.stream()
-            //     .filter(f -> f.getDays() == n)
-            //     .map(f -> "o")
-            //     .collect(Collectors.toList());
-            // System.out.println(fishSoup.toString());
-            // nFish.add(fishSoup);
-            // nFish.set(n, nThisAge);
-            nFish.add(new BigInteger(Integer.toString(nThisAge)));
+            int daysLeft = i;
+            int numberOfFishThatSpawnOnThisDay = (int) this.school.stream()
+                .filter(f -> f.getDays() == daysLeft)
+                .count();
+            numberOfFish.add(new BigInteger(Integer.toString(numberOfFishThatSpawnOnThisDay)));
         }
 
         while (days > 0) {
 
-            BigInteger first = nFish.remove(0);
-            // int first = nFish.remove(0);
+            // The fish at the start of the list will spawn today. Remove
+            // them from the list, so that the fish that will spawn tomorrow
+            // will be next.
+            BigInteger numberOfSpawningFish = numberOfFish.remove(0);
 
-            // nFish.set(6, nFish.get(6) + first);
-            nFish.set(6, nFish.get(6).add(first));
-            // List<String> oldestFish = nFish.get(0);
+            // Fish that spawned before, take six days to spawn again, so add
+            // them to the other fish that spawn in six days
+            numberOfFish.set(6, numberOfFish.get(6).add(numberOfSpawningFish));
 
-            nFish.add(first);
-
-            // System.out.println(days + ": " + first + " " + nFish.size());
+            // New fish take 8 days to spawn, so add them to the end of the
+            // list, which will be at the new index 8
+            numberOfFish.add(numberOfSpawningFish);
 
             days--;
-            // System.out.println(nFish);
-            // System.out.println(nFish.stream().reduce(0, Integer::sum));
         }
 
         BigInteger total = new BigInteger("0");
-        for (int i = 0; i < nFish.size(); i++) {
-            // System.out.println(nFish.get(i));
-            total = total.add(nFish.get(i));
-            // System.out.println(total);
+        for (BigInteger n : numberOfFish) {
+            total = total.add(n);
         }
 
-        // return nFish.stream().reduce(0, Integer::sum);
         return total;
     }
 
