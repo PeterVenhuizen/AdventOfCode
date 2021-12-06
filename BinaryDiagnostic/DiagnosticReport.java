@@ -47,16 +47,6 @@ class DiagnosticReport {
         return this.getLeastCommon(occurences);
     }
 
-    private String getGammaRate() {
-        Function<Map<String, Long>, String> func = this::getMostCommon;
-        return this.computePowerConsumption(0, "", func);
-    }
-
-    private String getEpsilonRate() {
-        Function<Map<String, Long>, String> func = this::getLeastCommon;
-        return this.computePowerConsumption(0, "", func);
-    }
-
     private String getWantedBit(List<String> data, int index,
         Function<Map<String, Long>, String> func) {
 
@@ -108,13 +98,20 @@ class DiagnosticReport {
     }
 
     public int getPowerConsumption() {
-        return this.binaryStringToDecimal(this.getGammaRate())
-            * this.binaryStringToDecimal(this.getEpsilonRate());
+        String gammaRate = computePowerConsumption(0, "", this::getMostCommon);
+        String epsilonRate = computePowerConsumption(0, "", this::getLeastCommon);
+        return binaryStringToDecimal(gammaRate) * binaryStringToDecimal(epsilonRate);
     }
 
     public int getLifeSupportRating() {
-        return this.binaryStringToDecimal(this.getOxygenGeneratorRating())
-            * this.binaryStringToDecimal(this.getCO2ScrubberRating());
+        String O2GeneratorRating = computeLifeSupportRating(this.reportData, 0, "0", 
+            this::getMostCommonWithDefault);
+        String CO2ScrubberRating = computeLifeSupportRating(this.reportData, 0, "0",
+            this::getLeastCommonWithDefault);
+        return binaryStringToDecimal(O2GeneratorRating) * binaryStringToDecimal(CO2ScrubberRating);
+
+        // return this.binaryStringToDecimal(this.getOxygenGeneratorRating())
+        //     * this.binaryStringToDecimal(this.getCO2ScrubberRating());
     }
 
 }
