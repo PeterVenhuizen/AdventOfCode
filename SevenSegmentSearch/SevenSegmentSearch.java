@@ -46,7 +46,7 @@ public class SevenSegmentSearch {
         // 9: abcd-fg  - 6
 
         try {
-            DisplayGroup testDisplay = readyDisplay("input.txt");
+            DisplayGroup testDisplay = readyDisplay("test_input.txt");
             System.out.println("Test part 1 (should be 26): " + testDisplay.getOccurencesOf1478());
             System.out.println(testDisplay.decodeEverything());
 
