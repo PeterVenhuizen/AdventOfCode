@@ -21,45 +21,27 @@ class Heightmap {
 
         int y = 0;
         for (String l : list) {
-            
             List<String> ints = stringToList(l);
             for (int x = 0; x < ints.size(); x++) {
                 String coor = x + "-" + y;
-                // System.out.println(coor);
                 this.points.put(coor, new Point(x, y, Integer.parseInt(ints.get(x))));
             }
-            // System.out.println(stringToList(l));
             y++;
         }
     }
 
-    private boolean isLowPoint(Point point) {
-        List<String> neighbors = point.getNeigbors();
-        // System.out.println(neighbors);
-        for (String n : neighbors) {
-            if (this.points.containsKey(n)) {
-                Point neigh = this.points.get(n);
-                // System.out.println("this: " + point.getHeight() + "neigh: " + neigh.getHeight());
-                if (point.getHeight() >= neigh.getHeight()) {
-                    return false;
-                }
-            }
-        }
-        return true;
+    private List<Point> getValidNeighbors(List<String> neighbors) {
+        return neighbors.stream()
+            .filter(n -> this.points.containsKey(n))
+            .map(p -> this.points.get(p))
+            .collect(Collectors.toList());
     }
 
-    // private List<String> expandBasin(Point point, List<String> basin) {
-    //     List<String> neighbors = point.getNeigbors();
-    //     for (String n : neighbors) {
-    //         if (this.points.containsKey(n) && !basin.contains(n)) {
-    //             Point neigh = this.points.get(n);
-    //             if (neigh.getHeight() != 9) {
-    //                 basin.add(n);
-    //             }
-    //         } 
-    //     }
-    //     return basin;
-    // }
+    private boolean isLowPoint(Point point) {
+        List<Point> neighbors = getValidNeighbors(point.getNeighbors());
+        return neighbors.stream()
+            .allMatch(n -> point.getHeight() < n.getHeight());
+    }
 
     public int getRiskLevel() {
         return this.points.keySet()
@@ -71,9 +53,6 @@ class Heightmap {
     }
 
     public int expandBasin(List<String> toLookAt, List<String> seen, List<String> basin) {
-        // System.out.println("look: " + toLookAt);
-        // System.out.println("seen: " + seen);
-        // System.out.println("basin: " + basin);
         if (toLookAt.size() == 0) {
             return basin.size();
         } else {
@@ -82,12 +61,12 @@ class Heightmap {
 
             try {
                 Point point = this.points.get(toLookAt.remove(0));
-                if (point.getHeight() != 9) {
-                    List<String> neighbors = point.getNeigbors();
+                if (!point.isHighPoint()) {
+                    List<String> neighbors = point.getNeighbors();
                     List<String> partOfBasin = neighbors.stream()
                         .filter(k -> this.points.containsKey(k))
                         .map(k -> this.points.get(k))
-                        .filter(p -> p.getHeight() != 9)
+                        .filter(p -> !p.isHighPoint())
                         .map(p -> p.getKey())
                         .collect(Collectors.toList());
                     // System.out.println(point.getKey() + " " + partOfBasin);
@@ -120,7 +99,7 @@ class Heightmap {
 
         List<Integer> allBasins = new ArrayList<>();
         for (Point p : lowpoints) {
-            List<String> toLookAt = p.getNeigbors();
+            List<String> toLookAt = p.getNeighbors();
             // System.out.println(toLookAt);
             // System.out.println(p.getKey());
             int basin = expandBasin(toLookAt, new ArrayList<>(), new ArrayList<>());
