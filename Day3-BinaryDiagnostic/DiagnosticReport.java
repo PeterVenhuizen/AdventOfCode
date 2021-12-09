@@ -64,8 +64,7 @@ class DiagnosticReport {
         }
 
         String bit = getWantedBit(this.reportData, index, func);
-        return computePowerConsumption(index + 1, 
-            binaryString + bit, func);
+        return computePowerConsumption(index + 1, binaryString + bit, func);
     }
 
     private String computeLifeSupportRating(List<String> data, int index, 
