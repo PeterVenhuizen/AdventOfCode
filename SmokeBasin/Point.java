@@ -11,36 +11,12 @@ class Point {
         this.height = height;
     }
 
-    public int getHeight(){
-        return this.height;
-    }
-
-    public boolean isHighPoint() {
-        return this.height == 9;
-    }
-
     public String getKey() {
         return String.format("%d-%d", this.x, this.y);
     }
 
-    public List<String> getNeighbors() {
+    public List<String> getNeighborKeys() {
         List<String> neighbors = new ArrayList<>();
-
-        for (int delta = -1; delta <= 1; delta += 2) {
-            
-        }
-
-        // for (int deltaX = -1; deltaX <= 1; deltaX += 2) {
-        //     for (int deltaY = -1; deltaY <= 1; deltaY += 2) {
-
-        //         int newX = this.x + deltaX;
-        //         int newY = this.y + deltaY;
-
-        //         if (newX >= 0 && newY >= 0) {
-        //             neighbors.add(String.format("%d-%d", newX, newY));
-        //         }
-        //     }
-        // }
 
         // above
         neighbors.add(String.format("%d-%d", this.x, this.y-1));
@@ -55,6 +31,14 @@ class Point {
         neighbors.add(String.format("%d-%d", this.x-1, this.y));
 
         return neighbors;
+    }
+
+    public int getHeight(){
+        return this.height;
+    }
+
+    public boolean isHighPoint() {
+        return this.height == 9;
     }
 
     public int getRisk() {

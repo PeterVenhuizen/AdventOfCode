@@ -6,7 +6,6 @@ class Heightmap {
 
     public Heightmap(List<String> heightmapList) {
         initHeightmap(heightmapList);
-        // findLowPoints();
     }
 
     private List<String> stringToList(String s) {
@@ -38,7 +37,7 @@ class Heightmap {
     }
 
     private boolean isLowPoint(Point point) {
-        List<Point> neighbors = getValidNeighbors(point.getNeighbors());
+        List<Point> neighbors = getValidNeighbors(point.getNeighborKeys());
         return neighbors.stream()
             .allMatch(n -> point.getHeight() < n.getHeight());
     }
@@ -52,65 +51,56 @@ class Heightmap {
             .reduce(0, Integer::sum);
     }
 
-    public int expandBasin(List<String> toLookAt, List<String> seen, List<String> basin) {
+    public int expandBasin(List<Point> toLookAt, List<String> basin) {
+        
         if (toLookAt.size() == 0) {
             return basin.size();
-        } else {
+        } 
+        
+        else {
+            Point point = toLookAt.remove(0);
 
-            // get all part of basin
+            // the initial staring Points might be peaks, so need to avoid those
+            if (!point.isHighPoint()) {
 
-            try {
-                Point point = this.points.get(toLookAt.remove(0));
-                if (!point.isHighPoint()) {
-                    List<String> neighbors = point.getNeighbors();
-                    List<String> partOfBasin = neighbors.stream()
-                        .filter(k -> this.points.containsKey(k))
-                        .map(k -> this.points.get(k))
-                        .filter(p -> !p.isHighPoint())
-                        .map(p -> p.getKey())
-                        .collect(Collectors.toList());
-                    // System.out.println(point.getKey() + " " + partOfBasin);
+                // select other points part of the basin
+                List<Point> neighbors = getValidNeighbors(point.getNeighborKeys());
+                List<String> basinExtension = neighbors.stream()
+                    .filter(p -> !p.isHighPoint())
+                    .map(p -> p.getKey())
+                    .collect(Collectors.toList());
 
-                    // System.out.println(partOfBasin);
-
-                    // filter those already seen
-                    for (String key : partOfBasin) {
-                        seen.add(key);
-                        
-                        if (!basin.contains(key)) {
-                            basin.add(key);
-                            toLookAt.add(key);
-                        }
+                // add to the existing basin
+                for (String key : basinExtension) {
+                    if (!basin.contains(key)) {
+                        basin.add(key);
+                        toLookAt.add(this.points.get(key));
                     }
                 }
-            } catch (NullPointerException e) {}
-
-            return expandBasin(toLookAt, seen, basin);
-
+            }
+            return expandBasin(toLookAt, basin);
         }
     }
 
     public int getBasins() {
+
+        // get the starting low points
         List<Point> lowpoints = this.points.keySet()
             .stream()
             .map(k -> this.points.get(k))
             .filter(p -> isLowPoint(p))
             .collect(Collectors.toList());
 
+        // expand each low point into a basin
         List<Integer> allBasins = new ArrayList<>();
         for (Point p : lowpoints) {
-            List<String> toLookAt = p.getNeighbors();
-            // System.out.println(toLookAt);
-            // System.out.println(p.getKey());
-            int basin = expandBasin(toLookAt, new ArrayList<>(), new ArrayList<>());
-            // System.out.println(p.getKey() + ": " + basin);
-            // System.out.println(basin);
+            List<Point> toLookAt = getValidNeighbors(p.getNeighborKeys());
+            int basin = expandBasin(toLookAt, new ArrayList<>());
             allBasins.add(basin);
         }
-        // System.out.println(allBasins);
 
         Collections.sort(allBasins, Collections.reverseOrder());
-        System.out.println(allBasins);
+        // System.out.println(allBasins);
 
         return allBasins.get(0) * allBasins.get(1) * allBasins.get(2);
     }
