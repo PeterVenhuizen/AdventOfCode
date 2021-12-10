@@ -1,5 +1,4 @@
 import java.util.stream.*;
-import java.math.BigInteger;
 import java.util.*;
 
 public class NavigationSubsystem {
@@ -15,10 +14,10 @@ public class NavigationSubsystem {
             .reduce(0, Integer::sum);
     }
 
-    public BigInteger getMiddleAutocompleteScore() {
-        List<BigInteger> scores = syntax.stream()
+    public Long getMiddleAutocompleteScore() {
+        List<Long> scores = syntax.stream()
             .map(s -> s.getAutocompleteScore())
-            .filter(s -> !s.equals(new BigInteger("0")))
+            .filter(s -> s != 0)
             .collect(Collectors.toList());
         
         Collections.sort(scores);

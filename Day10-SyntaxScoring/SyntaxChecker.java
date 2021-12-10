@@ -1,10 +1,9 @@
 import java.util.*;
-import java.math.BigInteger;
 
 public class SyntaxChecker {
     private Map<Character, Character> chunksMap;
     private Map<Character, Integer> pointsMap;
-    private Map<Character, BigInteger> completionScore;
+    private Map<Character, Integer> completionScore;
     private char[] chunks;
     private boolean isCorrupt;
 
@@ -30,10 +29,10 @@ public class SyntaxChecker {
         }};
 
         this.completionScore = new HashMap<>() {{
-            put(')', new BigInteger("1"));
-            put(']', new BigInteger("2"));
-            put('}', new BigInteger("3"));
-            put('>', new BigInteger("4"));
+            put(')', 1);
+            put(']', 2);
+            put('}', 3);
+            put('>', 4);
         }};
     }
 
@@ -70,19 +69,19 @@ public class SyntaxChecker {
         return (this.isCorrupt) ? pointsMap.get(incomplete.get(0)) : 0;
     }
 
-    public BigInteger getAutocompleteScore() {
+    public Long getAutocompleteScore() {
         List<Character> incomplete = getIncompleteChunks();
         if (!this.isCorrupt) {
             Collections.reverse(incomplete);
-            BigInteger total = new BigInteger("0");
+            long total = 0L;
             for (Character c: incomplete) {
-                total = total.multiply(new BigInteger("5"));
+                total *= 5;
                 Character closing = this.chunksMap.get(c);
-                total = total.add(completionScore.get(closing));
+                total += completionScore.get(closing);
             }
             return total;
         }
-        return new BigInteger("0");
+        return 0L;
     }
 
 }
