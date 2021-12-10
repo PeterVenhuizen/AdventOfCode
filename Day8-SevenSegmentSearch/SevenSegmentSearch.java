@@ -30,18 +30,17 @@ public class SevenSegmentSearch {
                e    f
                 gggg
 
-            
             Digit: composing segments - number of segments in digit
-            0: abc-efg  - 6
-            1: --c--f-  - 2
-            2: a-cde-g  - 5
-            3: a-cd-fg  - 5
-            4: -bcd-f-  - 4
-            5: abc--fg  - 5
-            6: ab-defg  - 6
-            7: a-c--f-  - 3
-            8: abcdefg  - 7
-            9: abcd-fg  - 6
+            0: abc-efg - 6
+            1: --c--f- - 2
+            2: a-cde-g - 5
+            3: a-cd-fg - 5
+            4: -bcd-f- - 4
+            5: abc--fg - 5
+            6: ab-defg - 6
+            7: a-c--f- - 3
+            8: abcdefg - 7
+            9: abcd-fg - 6
         */
 
         try {
@@ -54,8 +53,6 @@ public class SevenSegmentSearch {
             System.out.println("Test part 2 (should be 61229): " + testDisplay.decodeEverything());
             System.out.println("Answer part 2: " + display.decodeEverything());
 
-
-        
         } catch (FileNotFoundException e) {}
 
     }

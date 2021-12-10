@@ -70,8 +70,6 @@ public class SevenSegmentDisplay {
         return "-";
     }
 
-
-
     public int decode() {
 
         // segments I can't map to a number yet
@@ -110,7 +108,6 @@ public class SevenSegmentDisplay {
         for (String digit: this.fourDigitOutput) {
             output += decodeDigit(stringToList(digit), decoded);
         }
-        // System.out.println(output);
 
         return Integer.parseInt(output);
     }

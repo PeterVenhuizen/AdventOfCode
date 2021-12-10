@@ -36,6 +36,7 @@ public class theTreacheryOfWales {
 
         for (int pos = low; pos <= high; pos++) {
             int thisPos = pos;
+            
             int fuel = positions.stream()
                 .map(p -> func.apply(p, thisPos))
                 .reduce(0, Integer::sum);
