@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Day10 {
+public class SyntaxScoring {
 
     public static NavigationSubsystem getNavigationSubsystem(String inputFile) throws IOException {
         List<SyntaxChecker> syntax = new ArrayList<>();
@@ -23,8 +23,8 @@ public class Day10 {
 			NavigationSubsystem nav = getNavigationSubsystem("input.txt");
 			System.out.println("Answer part 1: " + nav.getSyntaxErrorScore());
 
-			System.out.println("Test part 2 (should be 288957): " + test.getMiddleScore());
-			System.out.println("Answer part 2: " + nav.getMiddleScore());
+			System.out.println("Test part 2 (should be 288957): " + test.getMiddleAutocompleteScore());
+			System.out.println("Answer part 2: " + nav.getMiddleAutocompleteScore());
 
 		} catch (IOException e) {}
 	}

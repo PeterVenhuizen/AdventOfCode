@@ -6,30 +6,35 @@ public class SyntaxChecker {
     private Map<Character, Integer> pointsMap;
     private Map<Character, BigInteger> completionScore;
     private char[] chunks;
+    private boolean isCorrupt;
 
     public SyntaxChecker(char[] chunks) {
         this.chunks = chunks;
+        this.isCorrupt = false;
         init();
     }
 
     private void init() {
-        this.chunksMap = new HashMap<>();
-        chunksMap.put('(', ')');
-        chunksMap.put('[', ']');
-        chunksMap.put('{', '}');
-        chunksMap.put('<', '>');
+        this.chunksMap = new HashMap<>() {{
+            put('(', ')'); 
+            put('[', ']');
+            put('{', '}');
+            put('<', '>');
+        }};
 
-        this.pointsMap = new HashMap<>();
-        pointsMap.put(')', 3);
-        pointsMap.put(']', 57);
-        pointsMap.put('}', 1197);
-        pointsMap.put('>', 25137);
+        this.pointsMap = new HashMap<>() {{
+            put(')', 3);
+            put(']', 57);
+            put('}', 1197);
+            put('>', 25137);
+        }};
 
-        this.completionScore = new HashMap<>();
-        completionScore.put(')', new BigInteger("1"));
-        completionScore.put(']', new BigInteger("2"));
-        completionScore.put('}', new BigInteger("3"));
-        completionScore.put('>', new BigInteger("4"));        
+        this.completionScore = new HashMap<>() {{
+            put(')', new BigInteger("1"));
+            put(']', new BigInteger("2"));
+            put('}', new BigInteger("3"));
+            put('>', new BigInteger("4"));
+        }};
     }
 
     private boolean isOpening(Character c) {
@@ -42,9 +47,9 @@ public class SyntaxChecker {
         return correctClosing == closing;
     }
 
-    public int getScore() {
+    private List<Character> getIncompleteChunks() {
         List<Character> filo = new ArrayList<>();
-        for (char c : chunks) {
+        for (char c : this.chunks) {
             int lastIdx = filo.size() - 1;
             if (isOpening(c)) {
                 filo.add(c);
@@ -53,39 +58,28 @@ public class SyntaxChecker {
                 filo.remove(lastIdx);
             }
             else {
-                return pointsMap.get(c);
+                this.isCorrupt = true;
+                return Arrays.asList(c);
             }
         }
-        return 0;
+        return filo;
     }
 
-    private boolean isValid() {
-        return getScore() == 0;
+    public int getCorruptedScore() {
+        List<Character> incomplete = getIncompleteChunks();
+        return (this.isCorrupt) ? pointsMap.get(incomplete.get(0)) : 0;
     }
 
-    public BigInteger autocomplete() {
-        if (isValid()) {
-            List<Character> filo = new ArrayList<>();
-            for (char c : chunks) {
-                int lastIdx = filo.size() - 1;
-                if (isOpening(c)) {
-                    filo.add(c);
-                }
-                else if (isValidChunk(filo.get(lastIdx), c)) {
-                    filo.remove(lastIdx);
-                }
-            }
-            // System.out.println(filo);
-
-            Collections.reverse(filo);
+    public BigInteger getAutocompleteScore() {
+        List<Character> incomplete = getIncompleteChunks();
+        if (!this.isCorrupt) {
+            Collections.reverse(incomplete);
             BigInteger total = new BigInteger("0");
-            for (Character f: filo) {
+            for (Character c: incomplete) {
                 total = total.multiply(new BigInteger("5"));
-                Character closing = this.chunksMap.get(f);
-                // total += completionScore.get(closing);
+                Character closing = this.chunksMap.get(c);
                 total = total.add(completionScore.get(closing));
             }
-            // System.out.println(total);
             return total;
         }
         return new BigInteger("0");

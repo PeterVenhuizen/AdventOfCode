@@ -11,19 +11,17 @@ public class NavigationSubsystem {
 
     public int getSyntaxErrorScore() {
         return syntax.stream()
-            .map(s -> s.getScore())
+            .map(s -> s.getCorruptedScore())
             .reduce(0, Integer::sum);
     }
 
-    public BigInteger getMiddleScore() {
+    public BigInteger getMiddleAutocompleteScore() {
         List<BigInteger> scores = syntax.stream()
-            .map(s -> s.autocomplete())
+            .map(s -> s.getAutocompleteScore())
             .filter(s -> !s.equals(new BigInteger("0")))
             .collect(Collectors.toList());
         
         Collections.sort(scores);
-        System.out.println(scores);
-        System.out.println(scores.size() + " " + scores.size() / 2);
         return scores.get((scores.size() / 2));
     }
 }
