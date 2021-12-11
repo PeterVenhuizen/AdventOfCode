@@ -39,16 +39,7 @@ public class Octopus {
         this.energyLevel = 0;
     }
 
-    public void restart() {
-        this.flashed = false;
-    }
-
     public void makeFlashable() {
         this.flashed = false;
-    }
-
-    @Override
-    public String toString() {
-        return Integer.toString(this.energyLevel);
     }
 }

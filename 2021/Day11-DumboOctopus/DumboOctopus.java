@@ -4,13 +4,19 @@ public class DumboOctopus {
 	public static void main(String[] args) {
 
 		try {
-			Cavern test = new Cavern("test_input.txt");
-			// System.out.println("Test part 1 (should be 1656): " + test.flash(100));
-			System.out.println("Test part 1 (should be 1656): " + test.flash(Integer.MAX_VALUE));
+			Cavern test1 = new Cavern("test_input.txt");
+			System.out.println("Test part 1 (should be 1656): " + test1.flash(100));
+			// System.out.println(test1.toString());
 
-			Cavern answer = new Cavern("input.txt");
-			// System.out.println("Answer part 1: " + answer.flash(100));
-			System.out.println("Answer part 1: " + answer.flash(Integer.MAX_VALUE));
+			Cavern cavern1 = new Cavern("input.txt");
+			System.out.println("Answer part 1: " + cavern1.flash(100));
+
+			Cavern test2 = new Cavern("test_input.txt");
+			System.out.println("Test part 2 (should be 195): " + test2.flash(Integer.MAX_VALUE));
+			// System.out.println(test2.toString());
+
+			Cavern cavern2 = new Cavern("input.txt");
+			System.out.println("Answer part 2: " + cavern2.flash(Integer.MAX_VALUE));
 
 		} catch (IOException e) {}
 

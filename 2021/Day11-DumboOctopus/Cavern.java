@@ -5,6 +5,7 @@ import java.util.stream.*;
 public class Cavern {
     private Map<String, Octopus> octopi;
     private List<String> octopiOrdered;
+    private static int SIZE = 10;
 
     public Cavern(String inputFile) throws IOException {
 
@@ -14,7 +15,6 @@ public class Cavern {
         this.octopiOrdered = new ArrayList<>();
 
         int x = 0, y = 0;
-
         while (sc.hasNext()) {
             char[] energyLevels = sc.nextLine().toCharArray();
             for (char energy : energyLevels) {
@@ -22,8 +22,7 @@ public class Cavern {
                 this.octopi.put(coord, new Octopus(Character.getNumericValue(energy)));
                 octopiOrdered.add(coord);
 
-                if (++x == 10) {
-                // if (++x == 5) {
+                if (++x == SIZE) {
                     x = 0;
                     y++;
                 }
@@ -42,36 +41,27 @@ public class Cavern {
     }
 
     private List<Octopus> getAdjacent(int x, int y) {
-        int maxX = 10;
-        int maxY = 10;
-        // int maxX = 5;
-        // int maxY = 5;
         int delta[][] = {{-1,-1,},{-1,0,},{-1,1},{0,-1},{0,1},{1,-1},{1,0},{1,1}};
 
         List<Octopus> adjacentOctopi = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
             int dx = x + delta[i][0];
             int dy = y + delta[i][1];
-            if (dx >= 0 && dx < maxX && dy >= 0 && dy < maxY) {
+            if (dx >= 0 && dx < SIZE && dy >= 0 && dy < SIZE) {
                 String coord = String.format("%d,%d", dx, dy);
                 adjacentOctopi.add(this.octopi.get(coord));
             }
         }
-
         return adjacentOctopi;
     }
 
     public int flash(int days) {
-        int totalFlashes = 0;
-        // System.out.println(this.toString());
-        int steps = 0;
+        int steps = 0, totalFlashes = 0;
         while (days > 0) {
-            int flashesBeforeToday = totalFlashes;
+
             // visit each octopus
             for (String coord : this.octopiOrdered) {
                 Octopus octo = this.octopi.get(coord);
-
-                // System.out.println(this.toString());
 
                 // see if they didn't flash yet
                 if (!octo.isPoweredDown()) {
@@ -82,36 +72,23 @@ public class Cavern {
                     // ask if they are going to flash
                     if (octo.isReadyToFlash()) {
                         totalFlashes += keepFlashing(new ArrayList<Octopus>(Arrays.asList(octo)));
-                        
-                        // totalFlashes++;
-                        // octo.powerDownOctoForToday();
-
-                        // // get all adjacent who didn't flash yet and
-                        // // increase their energy level
-                        // octo.getAdjacent()
-                        //     .stream()
-                        //     .filter(o -> o.didNotYetFlash())
-                        //     .forEach(o -> o.increaseEnergyLevel());
-
-                        // System.out.println(this.toString());
-
                     }
                 }               
             }
 
-            steps++;
+            // make all octopi flashable again for the next day
+            this.octopi.values().forEach(o -> o.makeFlashable());
 
-            if (this.octopi.values().stream().allMatch(o -> o.getEnergyLevel() == 0)) {
-                System.out.println(steps);
-                break;
+            ++steps;
+            --days;
+
+            // see if all octopi have flashed today
+            boolean allOctopiFlashedToday = this.octopi.values().stream()
+                .allMatch(o -> o.getEnergyLevel() == 0);
+            if (allOctopiFlashedToday) {
+                return steps;
             }
 
-            // restart all octopi again
-            this.octopi.values().forEach(o -> o.restart());
-
-            // System.out.println(this.toString());
-            // System.out.println("\n=====================\n");
-            --days;
         }
         return totalFlashes;
     }
@@ -123,7 +100,6 @@ public class Cavern {
 
         else {
             Octopus octo = flashable.remove(0);
-            // System.out.println(flashable.size());
             octo.powerDownForToday();
             
             // increase energy level
@@ -143,10 +119,7 @@ public class Cavern {
             List<Octopus> keepOnFlashing = Stream.concat(flashable.stream(), nowFlashAble.stream())
                 .collect(Collectors.toList());
 
-            // System.out.println(this.toString());
-
             return 1 + keepFlashing(keepOnFlashing);
-            // return 1;
         }
     }
 
@@ -156,9 +129,8 @@ public class Cavern {
         int x = 0;
         for (String coord : this.octopiOrdered) {
             Octopus octo = this.octopi.get(coord);
-            output += octo.toString();
-            if (++x == 10) {
-            // if (++x == 5) {
+            output += Integer.toString(octo.getEnergyLevel());
+            if (++x == SIZE) {
                 x = 0;
                 output += "\n";
             }
