@@ -1,6 +1,8 @@
-import java.io.IOException;
+import java.io.*;
+import java.util.*;
 
 public class DumboOctopus {
+
 	public static void main(String[] args) {
 
 		try {
