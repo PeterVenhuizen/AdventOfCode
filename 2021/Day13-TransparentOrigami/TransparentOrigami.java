@@ -36,9 +36,9 @@ public class TransparentOrigami {
 	public static void main(String[] args) {
 
 		try {
-			// FoldingPaper test = readDots("test_input.txt");
-			// System.out.println(test.toString());
-			// test.fold();
+			FoldingPaper test = readDots("test_input.txt");
+			test.fold();
+			System.out.println(test.toString());
 
 			FoldingPaper answer = readDots("input.txt");
 			answer.fold();

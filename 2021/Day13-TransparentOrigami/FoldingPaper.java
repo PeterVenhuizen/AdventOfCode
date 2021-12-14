@@ -91,7 +91,6 @@ class FoldingPaper {
                 row += (this.paper[i][j]) ? "#" : " ";
             }
             output = output + row + "\n";
-            // output += Arrays.toString(this.paper[i]) + "\n";
         }
         return output;
     }
