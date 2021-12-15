@@ -21,14 +21,6 @@ public class Chiton {
 		return map;
 	}
 
-	private static int getMaxX(Map<Node, Integer> map) {
-		return map.keySet().stream().mapToInt(n -> n.x).max().orElseThrow();
-	}
-
-	private static int getMaxY(Map<Node, Integer> map) {
-		return map.keySet().stream().mapToInt(n -> n.y).max().orElseThrow();
-	}
-
 	private static int increaseByN(int v, int n) {
 		return ((v + n) % 9) == 0 ? 9 : (v + n) % 9;
 	}
@@ -36,8 +28,8 @@ public class Chiton {
 	private static Map<Node, Integer> growMap(Map<Node, Integer> map) {
 		Map<Node, Integer> biggerMap = new HashMap<>();
 
-		int maxX = getMaxX(map);
-		int maxY = getMaxY(map);
+		int maxX = map.keySet().stream().mapToInt(n -> n.x).max().orElseThrow();
+		int maxY = map.keySet().stream().mapToInt(n -> n.y).max().orElseThrow();
 
 		for (int x = 0; x < 5 * (maxX + 1); x++) {
 			for (int y = 0; y < 5 * (maxY + 1); y++) {
@@ -50,30 +42,24 @@ public class Chiton {
 		return biggerMap;
 	}
 
-	public static Dijkstra initDijkstra(Map<Node, Integer> map) {
-	    Node end = new Node(getMaxX(map), getMaxY(map));
-		return new Dijkstra(map, end);
-	}
-
 	public static void main(String[] args) {
 
 		try {
 			Map<Node, Integer> testMap = parseMap("test_input.txt");
-			Dijkstra test = initDijkstra(testMap);
+			Dijkstra test = new Dijkstra(testMap);
 			System.out.println("Test part 1 (should be 40): " + test.getLowestRisk());
 
 			Map<Node, Integer> answerMap = parseMap("input.txt");
-			Dijkstra answer = initDijkstra(answerMap);
+			Dijkstra answer = new Dijkstra(answerMap);
 			System.out.println("Answer part 1: " + answer.getLowestRisk());
 
 			Map<Node, Integer> testBiggerMap = growMap(testMap);
-			Dijkstra test2 = initDijkstra(testBiggerMap);
+			Dijkstra test2 = new Dijkstra(testBiggerMap);
 			System.out.println("Test part 2 (should be 315): " + test2.getLowestRisk());
 
 			Map<Node, Integer> answerBiggerMap = growMap(answerMap);
-			Dijkstra answer2 = initDijkstra(answerBiggerMap);
+			Dijkstra answer2 = new Dijkstra(answerBiggerMap);
 			System.out.println("Answer part 2: " + answer2.getLowestRisk());
-
 		} catch (IOException e) {}
 
 	}

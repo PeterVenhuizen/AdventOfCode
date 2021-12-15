@@ -5,9 +5,16 @@ public class Dijkstra {
     private Map<Node, Integer> map;
     private Node end;
 
-    public Dijkstra(Map<Node, Integer> map, Node end) {
+    public Dijkstra(Map<Node, Integer> map) {
         this.map = map;
-        this.end = end;
+        setEndNode();
+    }
+
+    private void setEndNode() {
+        this.end = new Node(
+            this.map.keySet().stream().mapToInt(n -> n.x).max().orElseThrow(),
+            this.map.keySet().stream().mapToInt(n -> n.y).max().orElseThrow()
+        );
     }
 
     public int getLowestRisk() {
