@@ -8,6 +8,7 @@ class Polymer {
 
     public Polymer(String template, Map<String, String> pairs) {
         this.template = template;
+        // this.polymer = polymer;
         this.pairs = pairs;
         this.counts = new HashMap<>();
     }
@@ -63,12 +64,12 @@ class Polymer {
 
     public long growAgain(int steps) {
         
-        // count the number of single letters
+        // count the number of single letters -> monomers
         Map<Character, Long> freq = this.template.chars()
             .mapToObj(c -> (char)c)
             .collect(Collectors.groupingBy(e -> e, Collectors.counting()));
 
-        // count the number of pairs
+        // count the number of pairs -> dimers
         for (int i = 0; i < this.template.length() - 1; i++) {
             String pair = this.template.substring(i, i+2);
 
