@@ -3,13 +3,7 @@ import java.util.stream.Collectors;
 
 public class TrickShot {
 
-	public static void bruteForce() {
-
-		int MIN_X = 20, MAX_X = 30;
-		int MIN_Y = -10, MAX_Y= -5;
-		// int MIN_X = 79, MAX_X = 137;
-		// int MIN_Y = -176, MAX_Y= -117;
-
+	public static void bruteForce(int MIN_X, int MAX_X, int MIN_Y, int MAX_Y) {
 		List<Integer> maxYForTrajectoriesCrossingTargetArea = new ArrayList<>();
 		List<String> startingVelocitiesHittingTargetArea = new ArrayList<>();
 
@@ -53,11 +47,14 @@ public class TrickShot {
 
 		System.out.println("Max y: " + Collections.max(maxYForTrajectoriesCrossingTargetArea));
 		System.out.println("Distinct initial velocities: " + startingVelocitiesHittingTargetArea.size());
-
 	}
 
 
 	public static void main(String[] args) {
-		bruteForce();
+		System.out.println("TEST");
+		bruteForce(20, 30, -10, -5);
+
+		System.out.println("\nANSWER");
+		bruteForce(79, 137, -176, -117);
 	}
 }
