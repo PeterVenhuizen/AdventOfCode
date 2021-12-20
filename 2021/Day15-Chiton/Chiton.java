@@ -28,8 +28,8 @@ public class Chiton {
 	private static Map<Node, Integer> growMap(Map<Node, Integer> map) {
 		Map<Node, Integer> biggerMap = new HashMap<>();
 
-		int maxX = map.keySet().stream().mapToInt(n -> n.x).max().orElseThrow();
-		int maxY = map.keySet().stream().mapToInt(n -> n.y).max().orElseThrow();
+		int maxX = map.keySet().stream().mapToInt(n -> n.x()).max().orElseThrow();
+		int maxY = map.keySet().stream().mapToInt(n -> n.y()).max().orElseThrow();
 
 		for (int x = 0; x < 5 * (maxX + 1); x++) {
 			for (int y = 0; y < 5 * (maxY + 1); y++) {
